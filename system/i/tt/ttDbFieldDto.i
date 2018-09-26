@@ -1,8 +1,8 @@
 
 /*------------------------------------------------------------------------
-    File        : dsDbField.i
+    File        : ttDbFieldDto
     Notes       :
   ----------------------------------------------------------------------*/
 
-{tt/ttDbField.i}
-define dataset dsDbField for ttDbField.
+define temp-table ttDbFieldDto
+field compileUnit as character.

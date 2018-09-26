@@ -1,0 +1,323 @@
+ADD SEQUENCE "sqId"
+  INITIAL 0
+  INCREMENT 1
+  CYCLE-ON-LIMIT no
+
+ADD TABLE "dbField"
+  AREA "Schema Area"
+  DUMP-NAME "dbField"
+  TABLE-TRIGGER "CREATE" NO-OVERRIDE PROCEDURE "tr_create_fieldDB.p" CRC "?" 
+
+ADD FIELD "id" OF "dbField" AS int64 
+  FORMAT ">>>>>>>>>>>>>>>>>>9"
+  INITIAL "0"
+  POSITION 2
+  MAX-WIDTH 4
+  ORDER 10
+
+ADD FIELD "sourceName" OF "dbField" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 80
+  ORDER 20
+
+ADD FIELD "sourcePath" OF "dbField" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 400
+  ORDER 30
+
+ADD FIELD "line" OF "dbField" AS integer 
+  FORMAT "->,>>>,>>9"
+  INITIAL "0"
+  POSITION 5
+  MAX-WIDTH 4
+  ORDER 40
+
+ADD FIELD "type" OF "dbField" AS character 
+  FORMAT "x(20)"
+  INITIAL ""
+  POSITION 6
+  MAX-WIDTH 40
+  ORDER 50
+
+ADD FIELD "info" OF "dbField" AS character 
+  FORMAT "x(100)"
+  INITIAL ""
+  POSITION 7
+  MAX-WIDTH 200
+  ORDER 60
+
+ADD FIELD "compileUnit" OF "dbField" AS character 
+  FORMAT "x(100)"
+  INITIAL ""
+  POSITION 8
+  MAX-WIDTH 200
+  ORDER 70
+
+ADD FIELD "systemName" OF "dbField" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 9
+  MAX-WIDTH 80
+  ORDER 80
+
+ADD FIELD "fileName" OF "dbField" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 10
+  MAX-WIDTH 80
+  ORDER 90
+
+ADD INDEX "id" ON "dbField" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+ADD TABLE "error"
+  AREA "Schema Area"
+  DUMP-NAME "error"
+  TABLE-TRIGGER "CREATE" NO-OVERRIDE PROCEDURE "tr_create_error.p" CRC "?" 
+
+ADD FIELD "filePath" OF "error" AS character 
+  FORMAT "x(300)"
+  INITIAL ""
+  POSITION 2
+  MAX-WIDTH 600
+  ORDER 10
+
+ADD FIELD "systemName" OF "error" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 80
+  ORDER 20
+
+ADD FIELD "errorMessage" OF "error" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 400
+  ORDER 30
+
+ADD FIELD "id" OF "error" AS int64 
+  FORMAT ">>>>>>>>>>>>>>>>>>9"
+  INITIAL "0"
+  POSITION 5
+  MAX-WIDTH 4
+  ORDER 40
+
+ADD INDEX "id" ON "error" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+ADD TABLE "file"
+  AREA "Schema Area"
+  DUMP-NAME "file"
+  TABLE-TRIGGER "CREATE" NO-OVERRIDE PROCEDURE "tr_create_file.p" CRC "?" 
+
+ADD FIELD "id" OF "file" AS int64 
+  FORMAT ">>>>>>>>>>>>>>>>>>9"
+  INITIAL "0"
+  POSITION 2
+  MAX-WIDTH 8
+  ORDER 10
+
+ADD FIELD "fileName" OF "file" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 80
+  ORDER 20
+
+ADD FIELD "sourceName" OF "file" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 80
+  ORDER 30
+
+ADD FIELD "sourcePath" OF "file" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 5
+  MAX-WIDTH 400
+  ORDER 40
+
+ADD FIELD "line" OF "file" AS integer 
+  FORMAT "->,>>>,>>9"
+  INITIAL "0"
+  POSITION 6
+  MAX-WIDTH 4
+  ORDER 50
+
+ADD FIELD "type" OF "file" AS character 
+  FORMAT "x(20)"
+  INITIAL ""
+  POSITION 7
+  MAX-WIDTH 40
+  ORDER 60
+
+ADD FIELD "info" OF "file" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 8
+  MAX-WIDTH 400
+  ORDER 70
+
+ADD FIELD "compileUnit" OF "file" AS character 
+  FORMAT "x(100)"
+  INITIAL ""
+  POSITION 9
+  MAX-WIDTH 200
+  ORDER 80
+
+ADD FIELD "systemName" OF "file" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 10
+  MAX-WIDTH 80
+  ORDER 90
+
+ADD INDEX "id" ON "file" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+ADD TABLE "system"
+  AREA "Schema Area"
+  DUMP-NAME "system"
+  TABLE-TRIGGER "CREATE" NO-OVERRIDE PROCEDURE "tr_create_system.p" CRC "?" 
+  TABLE-TRIGGER "DELETE" NO-OVERRIDE PROCEDURE "tr_delete_system.p" CRC "?" 
+
+ADD FIELD "systemName" OF "system" AS character 
+  FORMAT "x(50)"
+  INITIAL ""
+  POSITION 2
+  MAX-WIDTH 80
+  ORDER 10
+
+ADD FIELD "localSourcePath" OF "system" AS character 
+  FORMAT "x(500)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 400
+  ORDER 20
+
+ADD FIELD "systemPropath" OF "system" AS character 
+  FORMAT "x(500)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 400
+  ORDER 30
+
+ADD FIELD "systemDBparameters" OF "system" AS character 
+  FORMAT "x(500)"
+  INITIAL ""
+  POSITION 5
+  MAX-WIDTH 200
+  ORDER 40
+
+ADD FIELD "entryPoints" OF "system" AS character 
+  FORMAT "x(500)"
+  INITIAL ""
+  POSITION 6
+  MAX-WIDTH 600
+  ORDER 50
+
+ADD FIELD "hasErrors" OF "system" AS logical 
+  FORMAT "true/false"
+  INITIAL "false"
+  POSITION 7
+  MAX-WIDTH 1
+  ORDER 60
+
+ADD FIELD "systemLocation" OF "system" AS character 
+  FORMAT "x(500)"
+  INITIAL ""
+  POSITION 8
+  MAX-WIDTH 400
+  ORDER 70
+
+ADD FIELD "id" OF "system" AS int64 
+  FORMAT ">>>>>>>>>>>>>>>>>>9"
+  INITIAL "0"
+  POSITION 9
+  MAX-WIDTH 8
+  ORDER 80
+
+ADD INDEX "id" ON "system" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+ADD INDEX "systemName" ON "system" 
+  AREA "Schema Area"
+  UNIQUE
+  INDEX-FIELD "systemName" ASCENDING 
+
+ADD TABLE "unused"
+  AREA "Schema Area"
+  DUMP-NAME "unused"
+  TABLE-TRIGGER "CREATE" NO-OVERRIDE PROCEDURE "tr_create_unused.p" CRC "?" 
+
+ADD FIELD "fileName" OF "unused" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 2
+  MAX-WIDTH 80
+  ORDER 10
+
+ADD FIELD "type" OF "unused" AS character 
+  FORMAT "x(20)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 40
+  ORDER 20
+
+ADD FIELD "compileUnit" OF "unused" AS character 
+  FORMAT "x(100)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 200
+  ORDER 30
+
+ADD FIELD "systemName" OF "unused" AS character 
+  FORMAT "x(40)"
+  INITIAL ""
+  POSITION 5
+  MAX-WIDTH 80
+  ORDER 40
+
+ADD FIELD "info" OF "unused" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 6
+  MAX-WIDTH 400
+  ORDER 50
+
+ADD FIELD "id" OF "unused" AS int64 
+  FORMAT ">>>>>>>>>>>>>>>>>>9"
+  INITIAL "0"
+  POSITION 7
+  MAX-WIDTH 8
+  ORDER 60
+
+ADD INDEX "id" ON "unused" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "id" ASCENDING 
+
+.
+PSC
+cpstream=ISO8859-1
+.
+0000006047

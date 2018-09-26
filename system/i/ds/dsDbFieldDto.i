@@ -1,8 +1,8 @@
 
 /*------------------------------------------------------------------------
-    File        : dsDbField.i
+    File        : dsDbFieldDto.i
     Notes       :
   ----------------------------------------------------------------------*/
 
-{tt/ttDbField.i}
-define dataset dsDbField for ttDbField.
+{tt/ttDbFieldDto.i}
+define dataset dsDbFieldDto for ttDbFieldDto.

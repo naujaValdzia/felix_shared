@@ -1,3 +1,9 @@
+
+/*------------------------------------------------------------------------
+    File        : ttUsed.i
+    Notes       :
+  ----------------------------------------------------------------------*/
+
 define temp-table ttUsed no-undo
     field fileName as character
     field type as character

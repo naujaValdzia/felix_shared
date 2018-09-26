@@ -1,16 +1,11 @@
 
  /*------------------------------------------------------------------------
     File        : ttUnused.i
-    Purpose     :
-    Syntax      : 
-    Description :
-    Author(s)   : ppacevicius
-    Created     : Mon Sep 10 15:03:53 EEST 2018
     Notes       : 
   ----------------------------------------------------------------------*/
 @openapi.openedge.entity.primarykey (fields="id").
     
-define temp-table ttunused before-table bttunused
+define temp-table ttUnused before-table bttUnused
 field fileName as character
 field type as character
 field compileUnit as character
