@@ -1,0 +1,143 @@
+{"OEWatcher":
+[
+	{  
+		"Name":"AblApplications",
+		"Schedule":{"StartDelay":3,"Interval":600},		
+		"Params":{"timeThreshold":259200000,"waitToFinish":20000,"waitAfterStop":300},
+		"Query":
+		{
+			"JmxQuery":"{\"O\":\"PASOE:type=OEManager,name=OeablServiceManager\",\"A\":\"Applications\"}",
+			"Extract":{"appName":"Applications:name"}
+		},
+		"Rules":
+		[{
+			"Name":"DoThreshold",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition","Constructor":"true"},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.ChainAction","Constructor":"getAgents"}
+			]
+		}
+		]
+	}
+	,"*****************************************************************",
+	{
+		"Name":"getAgents",
+		"Params":{},
+		"Query":
+		{
+			"JmxQuery":"{\"O\":\"PASOE:type=OEManager,name=AgentManager\",\"M\":[\"getAgents\",\"${appName}\"]}",
+			"Extract":{"agentId":"getAgents:agents:agentId"}
+		},
+		"Rules":
+		[{
+			"Name":"Threshold",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition","Constructor":"true"},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.TraceJsLogAction","Constructor": [
+				"\"AgentId: ${agentId}\""
+				]},
+				{"ClassName":"com.progress.appserv.util.oewatcher.ChainAction","Constructor":"getThreadMetrics"}
+			]
+		}
+		]
+	}
+	,"*****************************************************************",
+	{
+		"Name":"getThreadMetrics",
+		"Params":{},
+		"Query":
+		{
+			"JmxQuery":"{\"O\":\"PASOE:type=OEManager,name=AgentManager\",\"M\":[\"getThreadMetrics\",\"${agentId}\"]}",
+			"Extract":{"threadMetrics":"getThreadMetrics","threadId":"getThreadMetrics:AgentThread:ThreadId","threadStartTime":"getThreadMetrics:AgentThread:StartTime"}
+			
+		},
+		"Rules":
+		[
+        {
+			"Name":"AAA",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition",
+			"Constructor": [
+                "var stopAgent = false; ",
+                "if ('${threadStartTime}' != 'null') {",
+				"var curd = new Date(); ",
+				"var threadDate = new Date('${threadStartTime}'); ",
+                "var timeDiff = (curd  - curd.getTimezoneOffset()*60000 - threadDate); ",
+                " if (timeDiff > ${timeThreshold}) {",
+				" stopAgent = true; ",
+                "} ",
+				"} ",
+                " stopAgent "]},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.ChainAction","Constructor":"trickToGetActive"}
+			]
+		},
+        {
+			"Name":"AAA",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition",	
+            "Constructor": " '${agentId}' != 'null' "},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.TraceJsLogAction","Constructor": [
+				"var curd = new Date(); ",
+				"var threadDate = new Date('${threadStartTime}'); ",
+				"var threadAge = (curd  - curd.getTimezoneOffset()*60000 - threadDate); ",
+ 				"\"Agent ${agentId}, Thread id: ${threadId}, startTime: ${threadStartTime}, age: \"+threadAge "]}
+			]
+		}
+		]
+	}
+	,"*****************************************************************",
+	{
+		"Name":"trickToGetActive",
+		"Params":{},
+		"Query":
+		{
+			"JmxQuery":"{\"O\":\"PASOE:type=OEManager,name=AgentManager\",\"M\":[\"getAgents\",\"${appName}\"]}",
+			"Extract":{"agentIdToStop":"getAgents:agents:agentId","agentState":"getAgents:agents:state"}
+		},
+		"Rules":
+		[{
+			"Name":"Threshold",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition",
+            "Constructor":" ('${agentIdToStop}' == '${agentId}') && ('${agentState}' != 'STOPPING') && ('${agentState}' != 'STOPPED')"},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.InfoJsLogAction","Constructor": [
+                "var curd = new Date(); ",
+				"var threadDate = new Date('${threadStartTime}'); ",
+                "var dateDiff = (curd  - curd.getTimezoneOffset()*60000 - threadDate); ", 
+				"\"Stopping AgentId: ${agentIdToStop}. Age: \"+dateDiff +\" ms. State: ${agentState}\" "
+				]},
+				{"ClassName":"com.progress.appserv.util.oewatcher.ChainAction","Constructor":"stopAgent"}
+			]
+		}
+		]
+	}
+	,"*****************************************************************",
+	{
+		"Name":"stopAgent",
+		"Params":{},
+		"Query":
+		{
+			"JmxQuery":"{\"O\":\"PASOE:type=OEManager,name=AgentManager\",\"M\":[\"stopAgent\",\"${agentIdToStop}\",${waitToFinish},${waitAfterStop}]}",
+			"Extract":{"stopAgentResult":"stopAgent"}
+		},
+		"Rules":
+		[{
+			"Name":"Threshold",
+			"Condition":{"ClassName":"com.progress.appserv.util.oewatcher.JsCondition","Constructor":" true"},
+			"Actions":
+			[
+				{"ClassName":"com.progress.appserv.util.oewatcher.InfoJsLogAction","Constructor": [
+				"\"Agent ${agentIdToStop}. Stop result: ${stopAgentResult}\""
+				]}
+			]
+		}
+		]
+	}	
+
+]
+} 

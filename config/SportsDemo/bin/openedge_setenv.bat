@@ -1,0 +1,56 @@
+@echo off
+
+rem Catalina environment setup specific to the OpenEdge product set.
+rem This scripts adds in the Java system properties (-Dpsc.oe.<name>=<val>)
+rem that are global and used by OpenEdge web applications and catalina
+rem extensions
+rem
+
+rem Make it easy for the OpenEdge installer to tailor the DLC and WRKDIR
+rem locations so that they can be easily preserved when creating 
+rem AppServer instances and/or clones
+
+if not defined DLC (
+set DLC=C:\Progress\OpenEdge
+)
+if not defined WRKDIR (
+set WRKDIR=C:\OpenEdge\WRK
+)
+
+rem Load environment variables from OpenEdge's WRKDIR/proset.env, if it exists
+
+if exist "%WRKDIR%" (
+    if exist "%WRKDIR%"\proset.bat (
+        if defined CATALINA_DEBUG echo dbg: openedge_setenv.bat calling "%WRKDIR%"\proset.bat
+        call "%WRKDIR%"\proset.bat
+    )
+)
+
+rem Now add those as Java system properties to JAVA_OPTS environment variable
+set _oeopts=-Dpsc.as.oe.dlc="%DLC%"
+set _oeopts=%_oeopts% -Dpsc.as.oe.wrkdir="%WRKDIR%"
+set _oeopts=%_oeopts% -Dlogback.ContextSelector="JNDI"
+set _oeopts=%_oeopts% -Dlogback.configurationFile="file:///%CATALINA_BASE%/conf/logging.xml"
+rem set network buffer size to 60K
+set _oeopts=%_oeopts% -DPROGRESS.Session.NetworkBufferSize="60000"
+
+rem get the current user's login ID & user account SID
+if not exist "%windir%\System32\whoami.exe" goto whoamiWarn
+for /f "tokens=1,2 USEBACKQ delims= " %%f in (`%windir%\System32\whoami.exe /USER /NH`) do set uid=%%f & set sid=%%g
+set _oeopts=%_oeopts% -Dpsc.as.uid=%sid%
+set _oeopts=%_oeopts% -Dpsc.as.whoami=%uid%
+
+if not defined sid goto whoamiWarn
+if not defined uid goto whoamiWarn
+goto setOpts
+
+:whoamiWarn
+echo WARNING: could not set the user and account id properties
+
+:setOpts
+rem Now add the accumulated Java properties to the original list
+set JAVA_OPTS=%JAVA_OPTS% %_oeopts%
+
+if defined CATALINA_DEBUG echo dbg: openedge_setenv.bat updated JAVA_OPTS to %JAVA_OPTS%
+
+exit /b 0
