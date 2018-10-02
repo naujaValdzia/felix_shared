@@ -1,4 +1,4 @@
 [AppServer.Agent.felix]
     numInitialSessions=2
-	PROPATH=${CATALINA_BASE}/webapps/felix_AS/WEB-INF/openedge,${CATALINA_BASE}/webapps/ROOT/WEB-INF/openedge,${CATALINA_BASE}/openedge,${DLC}/tty,${DLC}/tty/netlib/OpenEdge.Net.pl,${CATALINA_BASE}/openedge,${CATALINA_BASE}/openedge/Spark.pl,${CATALINA_BASE}/openedge/Ccs.pl,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/system,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/util,$DLC/servers/pasoe/felix/dev/felix_shared/system/dto,$DLC/servers/pasoe/felix/dev/felix_shared/system\i,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/trigger,
+	PROPATH=${CATALINA_BASE}/webapps/felix/WEB-INF/openedge,${CATALINA_BASE}/webapps/ROOT/WEB-INF/openedge,${CATALINA_BASE}/openedge,${DLC}/tty,${DLC}/tty/netlib/OpenEdge.Net.pl,${CATALINA_BASE}/openedge,${CATALINA_BASE}/openedge/Spark.pl,${CATALINA_BASE}/openedge/Ccs.pl,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/system,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/util,$DLC/servers/pasoe/felix/dev/felix_shared/system/dto,$DLC/servers/pasoe/felix/dev/felix_shared/system\i,$DLC/servers/pasoe/felix/dev/felix_core/src/prog/trigger,
     uuid=http://localhost:5520/felix
