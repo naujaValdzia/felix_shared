@@ -1,1 +1,0 @@
-{"version":"Mon Sep 03 14:16:51 EEST 2018","updated":["\/static\/ordering.json","\/WEB-INF\/openedge\/ordering.gen"],"handlers":{"added":[{"name":"handler1","class":"OpenEdge.Web.DataObject.DataObjectHandler","url":"\/pdo\/"},{"name":"handler2","class":"OpenEdge.Web.PingWebHandler","url":"\/_oeping"},{"name":"handler3","class":"Spark.Core.Handler.FileUpload","url":"\/upload"}]}}
