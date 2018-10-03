@@ -3,5 +3,5 @@
     File        : dsFile.i
     Notes       :
   ----------------------------------------------------------------------*/
-{tt\ttFile.i}
+{tt/ttFile.i}
 define dataset dsFile for ttFile.
