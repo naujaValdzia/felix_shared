@@ -1,4 +1,4 @@
--db felixdb -H localhost -S 9000
+-db felixdb -H localhost -S 14440
 -cpinternal UTF-8
 -cpstream UTF-8
 -mmax 8192
