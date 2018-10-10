@@ -10,7 +10,7 @@ field sourceName as character
 field sourcePath as character
 field line as integer initial "0"
 field type as character
-field information as character
+field info as character
 field compileUnit as character
 field systemName as character
 field fileName as character
